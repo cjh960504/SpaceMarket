@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="Member">
+	<select id="selectAll" resultType="Member">
+		select * from member order by member_id desc
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Member">
+		select * from member where member_id=#{member_id}
+	</select>
+	
+	<resultMap type="Member" id="memberJoinProduct">
+		<id column="member_id" property="member_id"/>
+		<result column="user_id" property="user_id"/>
+		<result column="name" property="name"/>
+		<result column="phone" property="phone"/>
+		<result column="email_id" property="email_id"/>
+		<result column="email_id" property="email_server"/>
+		<result column="addr" property="addr"/>
+		<result column="regdate" property="regdate"/>
+		<result column="filename" property="filename"/>
+		<collection property="productList" column="member_id" javaType="java.util.List" ofType="Product" select="Product.selectByMember"/>	
+		<collection property="favoriteList" column="member_id" javaType="java.util.List" ofType="Favorite" select="Favorite.selectById"/>
+	</resultMap>
+	
+	<select id="selectWithProduct" parameterType="int" resultMap="memberJoinProduct">
+		select * from member where member_id=#{member_id}
+	</select>
+	
+	<insert id="insert" parameterType="Member">
+		insert into member(member_id, user_id, password, name, phone, email_id, email_server, addr, filename) 
+		values (seq_member.nextval, #{user_id}, #{password}, #{name}, #{phone}, #{email_id}, #{email_server}, #{addr}, #{filename})
+		<selectKey order="AFTER" keyProperty="member_id" resultType="int">
+			select seq_member.currval as member_id from dual
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="Member">
+		update member set password=#{password}, name=#{name}, phone=#{phone}, 
+		email_id=#{email_id}, email_server=#{email_server}, addr=#{addr} where member_id=#{member_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from member where member_id=#{member_id}
+	</delete>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="Member" resultType="Member">
+		select * from member where user_id=#{user_id} and password=#{password}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findid" parameterType="Member" resultType="Member">
+		select * from member where name=#{name} and phone=#{phone}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findpassword" parameterType="Member" resultType="Member">
+		select * from member where name=#{name} and phone=#{phone} and user_id=#{user_id}
+	</select>
+</mapper>

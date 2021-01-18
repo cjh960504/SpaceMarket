@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="TopCategory">
+	<resultMap type="TopCategory" id="topJoinSub">
+		<id column="topcategory_id" property="topcategory_id"/>
+		<result column="name" property="name"/>
+		<result column="rank" property="rank"/>
+		<collection property="subcategoryList" column="topcategory_id" javaType="java.util.List" ofType="SubCategory" select="SubCategory.selectByTop"/>
+	</resultMap>
+	<select id="selectAll" resultMap="topJoinSub">
+		select * from topcategory order by rank asc
+	</select>
+	<select id="select" parameterType="int" resultType="TopCategory">
+		select * from topcategory where topcategory_id=#{topcategory_id}
+	</select>
+	<insert id="insert" parameterType="TopCategory">
+		insert into topcategory(topcategory_id, name, rank) values(seq_topcategory.nextval, #{name}, #{rank})
+	</insert>
+	<update id="update" parameterType="TopCategory">
+		update topcategory set name=#{name}, rank=#{rank} where topcategory_id=#{topcategory_id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from topcategory where topcategory_id=#{topcategory_id}
+	</delete>
+</mapper>

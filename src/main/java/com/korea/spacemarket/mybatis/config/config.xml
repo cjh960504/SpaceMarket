@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.korea.spacemarket.model.domain.TopCategory" alias="TopCategory"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.SubCategory" alias="SubCategory"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Product" alias="Product"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Product_Image" alias="Product_Image"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.ForSearch" alias="ForSearch"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Product_State" alias="Product_State"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Member" alias="Member"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Favorite" alias="Favorite"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/TopCategoryMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/SubCategoryMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/ProductMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/Product_ImageMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/Product_StateMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/MemberMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/FavoriteMapper.xml"/>
+	</mappers>
+</configuration>

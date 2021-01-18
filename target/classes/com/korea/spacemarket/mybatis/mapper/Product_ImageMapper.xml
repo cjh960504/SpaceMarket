@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="Product_Image">
+	<insert id="insert" parameterType="Product_Image">
+		insert into product_image(product_image_id, product_id, filename) values(seq_product_image.nextval, #{product_id}, #{filename})
+		<selectKey keyProperty="product_image_id" order="AFTER" resultType="int">
+			select seq_product_image.currval as product_image_id from dual
+		</selectKey>
+	</insert>
+	<select id="selectByProduct" parameterType="int" resultType="Product_Image">
+		select * from product_image where product_id=#{product_id}
+	</select>
+	<delete id="delete" parameterType="int">
+		delete from product_image where product_id=#{product_id}
+	</delete>
+</mapper>

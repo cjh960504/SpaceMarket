@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+namespace="Product">
+	<insert id="insert" parameterType="Product">
+		insert into product(product_id, subcategory_id, member_id, product_name, price, brand, product_addr, detail, filename)
+		values(seq_product.nextval, #{subCategory.subcategory_id}, #{member.member_id}, #{product_name}, #{price}, #{brand}, #{product_addr}, #{detail}, #{filename})
+		<selectKey order="AFTER" keyProperty="product_id" resultType="int">
+			select seq_product.currval as product_id from dual		
+		</selectKey>
+	</insert>
+	
+	<resultMap type="Product" id="productJoinImage">
+		<id column="product_id" property="product_id"/>
+		<result column="product_name" property="product_name"/>
+		<result column="price" property="price"/>
+		<result column="brand" property="brand"/>
+		<result column="product_addr" property="product_addr"/>
+		<result column="detail" property="detail"/>
+		<result column="regdate" property="regdate"/>
+		<result column="filename" property="filename"/>
+		<association property="member" column="member_id" javaType="Member" select="Member.select"/>
+		<association property="productState" column="product_state_id" javaType="Product_State" select="Product_State.selectById"/>
+		<association property="subCategory" column="subcategory_id" javaType="SubCategory" select="SubCategory.selectById"/>
+		<collection  property="productImgArr" column="product_id" javaType="java.util.List" ofType="Product_Image" select="Product_Image.selectByProduct"/>
+	</resultMap>
+	
+	
+	<select id="selectAll" resultType="Product">
+		select * from product  
+	</select>
+	
+	<select id="selectById" parameterType="int" resultMap="productJoinImage">
+		select * from product where product_id=#{product_id}
+	</select>
+	
+	<select id="selectByMember" parameterType="int" resultMap="productJoinImage">
+		select * from product where member_id=#{member_id}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from product where product_id=#{product}
+	</delete>
+	
+	<select id="selectForSearch" parameterType="ForSearch" resultMap="productJoinImage">
+		select * from product where product_name LIKE '%'||#{product_name}||'%' and product_addr LIKE '%'||#{product_addr}||'%'
+	</select>
+	
+	<update id="updateState" parameterType="int">
+		update product set product_state_id=2 where product_id=#{product_id}
+	</update>
+</mapper>

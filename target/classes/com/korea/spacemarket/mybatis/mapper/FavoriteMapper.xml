@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="Favorite">
+	
+	<resultMap type="Favorite" id="favoriteJoinProduct">
+		<id column="favorite_id" property="favorite_id"/>
+		<result column="member_id" property="member_id"/>
+		<association property="product" column="product_id" javaType="Product" select="Product.selectById"/>
+	</resultMap>
+	
+	<select id="selectById" resultMap="favoriteJoinProduct">
+		select * from favorite where member_id=#{member_id}
+	</select>
+	
+	<insert id="insert" parameterType="Favorite">
+		insert into favorite(favorite_id, member_id, product_id) values(seq_favorite.nextval, #{member_id}, #{product.product_id})
+	</insert>
+</mapper>
