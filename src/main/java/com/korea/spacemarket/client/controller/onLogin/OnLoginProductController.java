@@ -74,6 +74,7 @@ public class OnLoginProductController {
 		MessageData messageData = new MessageData();
 		messageData.setMsg("상품등록에 성공하였습니다.");
 		messageData.setResultCode(1);
+		messageData.setData(member.getMember_id());
 		return messageData;
 	}
 	
@@ -94,6 +95,22 @@ public class OnLoginProductController {
 		messageData.setResultCode(1);
 		return messageData;
 	}
+	@GetMapping("/member/products")
+	public ModelAndView productOfMember(HttpServletRequest request, int member_id) {
+		ModelAndView mav = new ModelAndView("market/member/member_products");
+		Member member = (Member) memberService.selectWithProduct(member_id);
+		mav.addObject("thisMember", member);
+		return mav;
+	}
+	
+	@GetMapping("/member/favoriteProducts")
+	public ModelAndView favoriteOfMember(HttpServletRequest request, int member_id) {
+		ModelAndView mav = new ModelAndView("market/member/favorite_products");
+		Member member = (Member) memberService.selectWithProduct(member_id);
+		mav.addObject("thisMember", member);
+		return mav;
+	}
+	
 	@ExceptionHandler(FavoriteRegistFailException.class)
 	@ResponseBody
 	public MessageData exceptionHandle(FavoriteRegistFailException e) {

@@ -29,7 +29,8 @@ public class GlobalDataAspect {
 		
 		String uri = request.getRequestURI();
 		logger.debug("들어온 URI : "+ uri);
-		if(uri.equals("/market/product/detail")||uri.equals("/market/member/signin")) {
+		//if문을 반대로 하자 즉, topList가 필요한 uri들 먼저 처리
+		if(uri.equals("/market/product/detail")||uri.equals("/market/member/signin")||uri.equals("/market/member/findId")||uri.equals("/market/product/updateState")) {
 			logger.debug("들어온 URI 2: "+ uri);
 			result = joinPoint.proceed();
 		}else {
@@ -40,6 +41,8 @@ public class GlobalDataAspect {
 				mav = (ModelAndView)returnObj;
 				mav.addObject("topList", topList);
 				result=mav;
+			}else {
+				result = returnObj;
 			}
 		}
 		return result;

@@ -1,5 +1,6 @@
 package com.korea.spacemarket.client.controller.member;
 
+import javax.mail.Session;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,11 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.korea.spacemarket.admin.controller.member.MemberController;
 import com.korea.spacemarket.exception.MemberDMLException;
 import com.korea.spacemarket.exception.MemberIdPasswordNotFound;
 import com.korea.spacemarket.exception.MemberNotFoundException;
@@ -87,35 +89,43 @@ public class ClientMemberController  implements ServletContextAware{
 	}
 	
 	@GetMapping("/member/findIdForm")
-	public ModelAndView getFindIdForm(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("market/member/findid");
-		return mav;
+	public String getFindIdForm(HttpServletRequest request) {
+		return "market/member/findid";
 	}
 	
-	@PostMapping(value="/member/findId", produces="text/html;charset=utf8")
+	@GetMapping("/member/findPWForm")
+	public String getFindPWForm(HttpServletRequest request) {
+		return "market/member/findPW";
+	}
+	
+	@RequestMapping(value="/member/findId", method=RequestMethod.GET)
 	@ResponseBody
 	public MessageData memberFindId(Member member, HttpServletRequest request) {
-		memberService.findid(member);
+		Member findMember = memberService.findid(member);
+		logger.debug("name" + member.getName());
+		logger.debug("phone : "+member.getPhone());
+		logger.debug("finded : "+findMember.getUser_id());
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
-		messageData.setMsg("등록된 이메일을 확인해주세요.");
+		messageData.setMsg("찾으시는 아이디는 "+findMember.getUser_id());
+		logger.debug(""+messageData.getResultCode());
+		logger.debug(""+messageData.getMsg());
 		return messageData;
 	}
-	@GetMapping("/member/products")
-	public ModelAndView productOfMember(HttpServletRequest request, int member_id) {
-		ModelAndView mav = new ModelAndView("market/member/member_products");
-		Member member = (Member) memberService.selectWithProduct(member_id);
-		mav.addObject("thisMember", member);
-		return mav;
+	
+	@GetMapping("/member/findPW")
+	@ResponseBody
+	public MessageData memberFindPW(Member member, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		memberService.findpassword(member);
+		logger.debug("user_id : " +member.getUser_id() );
+		MessageData messageData = new MessageData();
+		messageData.setResultCode(1);
+		messageData.setMsg("작성하신 이메일로 임시비밀번호로 발급해드렸습니다.\n임시비밀번호로 로그인 후 비밀번호를 꼭 변경해주세요!");
+		return messageData;
 	}
 	
-	@GetMapping("/member/favoriteProducts")
-	public ModelAndView favoriteOfMember(HttpServletRequest request, int member_id) {
-		ModelAndView mav = new ModelAndView("market/member/favorite_products");
-		Member member = (Member) memberService.selectWithProduct(member_id);
-		mav.addObject("thisMember", member);
-		return mav;
-	}
+	
 	
 	
 	//예외처리
@@ -130,10 +140,12 @@ public class ClientMemberController  implements ServletContextAware{
 	
 	@ExceptionHandler(MemberIdPasswordNotFound.class)
 	@ResponseBody
-	public MessageData handleException(MemberIdPasswordNotFound e) {
+	public MessageData handleException(HttpServletRequest request, MemberIdPasswordNotFound e) {
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(0);
 		messageData.setMsg(e.getMessage());
+		logger.debug(""+messageData.getResultCode());
+		logger.debug(""+messageData.getMsg());
 		return messageData;
 	}
 	

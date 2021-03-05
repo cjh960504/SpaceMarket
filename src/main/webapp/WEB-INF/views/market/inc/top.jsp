@@ -31,6 +31,12 @@
 									</div>
 								<%} %>
 							</li>
+							<li class="nav-item active">
+								<a class="nav-link" href="/market/cs/notice">공지사항</a>
+							</li>
+							<li class="nav-item active">
+								<a class="nav-link" href="/market/main">문의하기</a>
+							</li>
 						</ul>
 						<ul class="navbar-nav ml-auto mt-10">
 							<li class="nav-item">

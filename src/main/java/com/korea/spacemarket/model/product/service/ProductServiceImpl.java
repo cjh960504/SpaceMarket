@@ -101,7 +101,19 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public List<Product> selectForSearch(ForSearch forSearch) {
-		return productDAO.selectForSearch(forSearch);
+		if(forSearch.getProduct_addr()==null) {
+			forSearch.setProduct_addr("");
+		}
+		if(forSearch.getSubcategory_id()==0) {
+			return productDAO.selectForAll(forSearch);
+		}else {
+			return productDAO.selectForSearch(forSearch);
+		}
+	}
+	
+	@Override
+	public List<Product> search(String product_name) {
+		return productDAO.search(product_name);
 	}
 	
 	@Override

@@ -12,6 +12,7 @@
 		<typeAlias type="com.korea.spacemarket.model.domain.Product_State" alias="Product_State"/>
 		<typeAlias type="com.korea.spacemarket.model.domain.Member" alias="Member"/>
 		<typeAlias type="com.korea.spacemarket.model.domain.Favorite" alias="Favorite"/>
+		<typeAlias type="com.korea.spacemarket.model.domain.Admin_Member" alias="Admin_Member"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/korea/spacemarket/mybatis/mapper/TopCategoryMapper.xml"/>
@@ -21,5 +22,6 @@
 		<mapper resource="com/korea/spacemarket/mybatis/mapper/Product_StateMapper.xml"/>
 		<mapper resource="com/korea/spacemarket/mybatis/mapper/MemberMapper.xml"/>
 		<mapper resource="com/korea/spacemarket/mybatis/mapper/FavoriteMapper.xml"/>
+		<mapper resource="com/korea/spacemarket/mybatis/mapper/Admin_MemberMapper.xml"/>
 	</mappers>
 </configuration>

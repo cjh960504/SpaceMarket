@@ -29,18 +29,28 @@ public class ProductController {
 	
 	@PostMapping("/search")
 	public ModelAndView searchProduct(HttpServletRequest request, ForSearch forSearch) {
-		logger.debug("topcategory_id="+forSearch.getTopcategory_id());
+		logger.debug("topcategory_id="+forSearch.getSubcategory_id());
 		logger.debug("product_name="+forSearch.getProduct_name());
 		logger.debug("product_addr="+forSearch.getProduct_addr());
 		logger.debug("currentPage="+forSearch.getCurrentPage());
 		List<Product> productList = productService.selectForSearch(forSearch);
 		ModelAndView mav = new ModelAndView("market/product/searchList");
-		mav.addObject("topcategory_id", forSearch.getTopcategory_id());
+		mav.addObject("subcategory_id", forSearch.getSubcategory_id());
 		mav.addObject("productList", productList);
 		mav.addObject("forSearch", forSearch);
 		mav.addObject("currentPage", forSearch.getCurrentPage());
 		return mav;
 	}
+	/*
+	 * @PostMapping("/search") public ModelAndView
+	 * searchSubCategory(HttpServletRequest request, ForSearch forSearch) {
+	 * List<Product> productList = productService.selectForSearch(forSearch);
+	 * ModelAndView mav = new ModelAndView("market/product/searchList");
+	 * mav.addObject("topcategory_id", forSearch.getTopcategory_id());
+	 * mav.addObject("productList", productList); mav.addObject("forSearch",
+	 * forSearch); mav.addObject("currentPage", forSearch.getCurrentPage()); return
+	 * mav; }
+	 */
 	
 	@GetMapping("/product/detail")
 	public ModelAndView detailProduct(HttpServletRequest request, int product_id) {

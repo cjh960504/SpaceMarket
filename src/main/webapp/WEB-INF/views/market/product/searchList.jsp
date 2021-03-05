@@ -14,11 +14,11 @@
 	pager.init(request, productList);
 	
 	TopCategory selectedTop=null;
-	for(TopCategory topCategory:topList){
+	/* for(TopCategory topCategory:topList){
 		if(topCategory.getTopcategory_id()==(Integer)request.getAttribute("topcategory_id")){
 			selectedTop=topCategory;
 		}
-	}
+	} */
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,16 +66,19 @@
 													<input type="text" class="form-control my-2 my-lg-1" id="inputtext4" name="product_name" placeholder="What are you looking for">
 												</div>
 												<div class="form-group col-md-3">
-													<select class="w-100 form-control mt-lg-1 mt-md-2" name="subCategory.topCategory.topcategory_id">
+													<select class="w-100 form-control mt-lg-1 mt-md-2" name="subcategory_id">
 														<option>Category</option>
 														<%for(TopCategory topCategory:topList){ %>
-															<option value="<%=topCategory.getTopcategory_id()%>"><%=topCategory.getName() %></option>
+															<option disabled="disabled"><%=topCategory.getName() %></option>
+															<%for(SubCategory subCategory:topCategory.getSubcategoryList()) {%>
+																<option value="<%=subCategory.getSubcategory_id()%>"><%=subCategory.getName() %></option>
+															<%} %>
 														<%} %>
 													</select>
 												</div>
-												<div class="form-group col-md-3">
+												<!-- <div class="form-group col-md-3">
 													<input type="text" class="form-control my-2 my-lg-1" id="inputLocation4" name="product_addr" placeholder="Location">
-												</div>
+												</div> -->
 												<div class="form-group col-md-2 align-self-center">
 													<button type="button" class="btn btn-primary" onClick="searchProduct()">Search Now</button>
 												</div>
@@ -100,11 +103,11 @@
 			<div class="col-md-3">
 				<div class="category-sidebar">
 					<div class="widget category-list">
-	<h4 class="widget-header"><%=selectedTop.getName() %></h4>
+	<h4 class="widget-header">선택된 카테고리</h4>
 	<ul class="category-list">
-		<%for(SubCategory subCategory : selectedTop.getSubcategoryList()){ %>
+		<%-- <%for(SubCategory subCategory : selectedTop.getSubcategoryList()){ %>
 			<li><a href="#"><%=subCategory.getName()%></a></li>
-		<%} %>
+		<%} %> --%>
 	</ul>
 </div>
 

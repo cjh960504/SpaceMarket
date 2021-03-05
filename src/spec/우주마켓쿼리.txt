@@ -138,3 +138,13 @@ alter table product add constraint fk_productstateproduct foreign key (product_s
 alter table product modify product_state_id number default 1;
 insert into product_state(product_state_id, state) values (seq_product_state.nextval, '판매중');
 insert into product_state(product_state_id, state) values (seq_product_state.nextval, '판매완료');
+
+<!--관리자 회원 테이블 (임시)-->
+create table admin_member(
+admin_member_id number primary key,
+user_id varchar(20),
+password varchar(100));
+
+create sequence admin_member_seq
+increment by 1
+start with 1;

@@ -170,7 +170,7 @@ function deleteProduct() {
   	</select>
   	<!-- 관리자 로그인한 정보가 들어와야함  -->
   	<input type="hidden" name="product_id" value="<%=product.getProduct_id()%>">
-  	<input type="hidden" name="member_id" value="<%=product.getMember_id()%>">
+<%--   	<input type="hidden" name="member_id" value="<%=product.getMember_id()%>"> --%>
     <input type="text" name="product_name" value="<%=product.getProduct_name()%>">
     <input type="text" name="price" value="<%=product.getPrice()%>">
     <input type="text" name="brand" value="<%=product.getBrand()%>">

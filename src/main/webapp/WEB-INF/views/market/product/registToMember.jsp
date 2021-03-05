@@ -44,6 +44,7 @@
 	color:black;
 	cursor:pointer;
 }
+
   </style>
   
   <script>
@@ -124,25 +125,87 @@
 		
 		formData.append("detail" , (CKEDITOR.instances["detail"].getData()));
 		
-		$.ajax({
-			url:"/market/product/regist",
-			data:formData,
-			contentType:false,/*false일 경우 multipart/form-data로 지정한 효과!*/
-			processData:false,/*false일 경우 query-string으로 전송하지 않음, 문자열만 보내는게 아니라 이미지도 껴있기 떄문에 stream방식*/
-			type:"post",
-			success:function(responseData){
-				//성공실패 여부를 판단할 수 있는 데이터
-				if(responseData.resultCode==1){
-					location.href="/admin/product/list";
-				}else{
-					alert(responseData.msg);
+		if(uploadFiles.length<1){
+			alert("상품의 이미지가 없어서 되겠어요?");
+		}else{
+			$.ajax({
+				url:"/market/product/regist",
+				data:formData,
+				contentType:false,/*false일 경우 multipart/form-data로 지정한 효과!*/
+				processData:false,/*false일 경우 query-string으로 전송하지 않음, 문자열만 보내는게 아니라 이미지도 껴있기 떄문에 stream방식*/
+				type:"post",
+				success:function(responseData){
+					//성공실패 여부를 판단할 수 있는 데이터
+					if(responseData.resultCode==1){
+						location.href="/market/member/products?member_id="+responseData.data;
+					}else{
+						alert(responseData.msg);
+					}
 				}
-			}
-		})
+			})
+		}
 	}
 	
   </script>
-  
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var jibunAddr = data.jibunAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                //document.getElementById('sample4_postcode').value = data.zonecode;
+                document.getElementById("addr").value = jibunAddr;
+                //document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                
+                
+                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+               /*  if(roadAddr !== ''){
+                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("sample4_extraAddress").value = '';
+                } */
+
+                var guideTextBox = document.getElementById("guide");
+                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                /* if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                } */
+            }
+        }).open();
+    }
+</script>
 </head>
 
 <body class="body-wrapper">
@@ -161,7 +224,7 @@
                             <h6 class="font-weight-bold pt-4 pb-1">제목:</h6>
                             <input type="text" name="product_name" class="border w-100 p-2 bg-white text-capitalize" placeholder="Ad title go There">
                             <h6 class="font-weight-bold pt-4 pb-1">판매자 위치:</h6>
-                            <input type="text" name="product_addr" class="border w-100 p-2 bg-white text-capitalize" placeholder="Ad title go There">
+                            <input type="text" id="addr" name="product_addr" class="border w-100 p-2 bg-white text-capitalize" placeholder="Ad title go There" value="<%=member.getAddr()%>"><input type="button" value="주소변경" onClick="sample4_execDaumPostcode()">
                             <h6 class="font-weight-bold pt-4 pb-1">설명:</h6>
                             <textarea name="detail" id="detail" class="border p-3 w-100" rows="7" placeholder="내용을 작성해주세요."></textarea>
                         </div>

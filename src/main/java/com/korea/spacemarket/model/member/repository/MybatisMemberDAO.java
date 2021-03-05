@@ -3,12 +3,9 @@ package com.korea.spacemarket.model.member.repository;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.korea.spacemarket.admin.controller.member.MemberController;
 import com.korea.spacemarket.exception.MemberDMLException;
 import com.korea.spacemarket.exception.MemberIdPasswordNotFound;
 import com.korea.spacemarket.exception.MemberNotFoundException;
@@ -62,30 +59,22 @@ public class MybatisMemberDAO implements MemberDAO{
 		return obj;
 	}
 
-//	@Override
-//	public Member findid(Member member) throws MemberIdPasswordNotFound{
-//		int result = sqlSessionTemplate.selectOne("Member.findid", member);
-//		if(result==0) {
-//			throw new MemberIdPasswordNotFound("Id를 찾을수 없습니다");
-//		}
-//	}
-//
-//	@Override
-//	public void findpassword(Member member) throws MemberIdPasswordNotFound{
-//		int result = sqlSessionTemplate.selectOne("Member.findpassword", member);
-//		if(result==0) {
-//			throw new MemberIdPasswordNotFound("Password를 찾을수 없습니다");
-//		}
-//	}
 	@Override
-	public Member findid(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member findid(Member member) throws MemberIdPasswordNotFound{
+		Member findMember = sqlSessionTemplate.selectOne("Member.findid", member);
+		if(findMember==null) {
+			throw new MemberIdPasswordNotFound("찾으시는 ID가 없습니다.");
+		}
+		return findMember;
 	}
+
 	@Override
-	public Member findpassword(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	public Member findpassword(Member member) throws MemberIdPasswordNotFound{
+		Member findMember = sqlSessionTemplate.selectOne("Member.findpassword", member);
+		if(findMember==null) {
+			throw new MemberIdPasswordNotFound("해당 정보의 회원을 찾을 수 없습니다");
+		}
+		return findMember;
 	}
 	@Override
 	public Member selectWithProduct(int member_id) {

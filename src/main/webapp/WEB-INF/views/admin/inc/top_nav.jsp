@@ -21,5 +21,9 @@
       <a href="#">Link 3</a>
     </div>
   </div> 
+  <a href="/admin/cs/notice">공지사항관리</a>
+  <%if(session.getAttribute("admin")!=null){ %>
+	<a href="/admin/logout">로그아웃</a>
+  <%} %>
 </div>
 

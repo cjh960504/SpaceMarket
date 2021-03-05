@@ -37,8 +37,8 @@
 	</insert>
 	
 	<update id="update" parameterType="Member">
-		update member set password=#{password}, name=#{name}, phone=#{phone}, 
-		email_id=#{email_id}, email_server=#{email_server}, addr=#{addr} where member_id=#{member_id}
+		update member set name=#{name}, phone=#{phone}, 
+		email_id=#{email_id}, password=#{password}, email_server=#{email_server}, addr=#{addr} where member_id=#{member_id}
 	</update>
 	
 	<delete id="delete" parameterType="int">
@@ -57,6 +57,6 @@
 	
 	<!-- 비밀번호 찾기 -->
 	<select id="findpassword" parameterType="Member" resultType="Member">
-		select * from member where name=#{name} and phone=#{phone} and user_id=#{user_id}
+		select * from member where user_id=#{user_id} and email_id=#{email_id} and email_server=#{email_server}
 	</select>
 </mapper>

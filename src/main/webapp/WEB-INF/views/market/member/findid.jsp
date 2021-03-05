@@ -4,25 +4,33 @@
 <head>
 
   <!-- SITE TITTLE -->
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Classimax</title>
 <%@ include file="../inc/header.jsp" %>
 <script>
 function findId(){
-	var formData = new FormData($("form")[0]);
-	$.ajax({
-		url:"/market/member/findId",
-		data:formData,
-		contentType:false,
-		processData:false,
-		type:"post",
-		success:function(responseData){
-			alert(responseData.msg);
-			location.href="/market/member/loginForm";
-		}
-	});
+	var name=$("input[name='name']").val();
+	var phone=$("input[name='phone']").val();
+	if(name.length<2||phone.length<11){
+		alert("이름과 핸드폰번호를 정확히 입력해주세요.");
+	}else{
+		$.ajax({
+			url:"/market/member/findId",
+			type:"get",
+			data:{
+				"name":name,
+				"phone":phone
+			},
+			success:function(data){
+				alert(data.msg);
+				if(data.resultCode==1){
+					location.href="/market/member/loginForm";			
+				}
+			}
+		});
+	}
 }
 </script>
 </head>
@@ -46,7 +54,7 @@ function findId(){
                                     <label for="keep-me-logged-in" class="pt-3 pb-2">Keep me logged in</label>
                             </div> -->
                             <button type="button" onClick="findId()" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Find</button>
-                            <a class="mt-3 d-block  text-primary" href="#">Forget Password?</a>
+                            <a class="mt-3 d-block  text-primary" href="/market/member/findPWForm">Forget Password?</a>
                             <a class="mt-3 d-block  text-primary" href="/market/member/loginForm">Log in</a>
                             <a class="mt-3 d-inline-block text-primary" href="/market/member/registForm">Register Now</a>
                         </fieldset>

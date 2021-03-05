@@ -73,20 +73,30 @@
 										<form id="searchForm">
 											<input type="hidden" name="currentPage" value="1">
 											<div class="form-row">
+											<%if(session.getAttribute("member")!=null){ %>
+											<%Member loginMember = (Member)session.getAttribute("member"); %>
+											<%String[] array = loginMember.getAddr().split(" "); %>
+												<div class="form-group col-md-4">
+													<input type="text" class="form-control my-2 my-lg-1" id="inputtext4" name="product_addr" value="<%=array[array.length-2]%>">
+												</div>
+											<%} %>
 												<div class="form-group col-md-4">
 													<input type="text" class="form-control my-2 my-lg-1" id="inputtext4" name="product_name" placeholder="What are you looking for">
 												</div>
 												<div class="form-group col-md-3">
-													<select class="w-100 form-control mt-lg-1 mt-md-2" name="topcategory_id">
-														<option>Category</option>
+													<select class="w-100 form-control mt-lg-1 mt-md-2" name="subcategory_id">
+														<option value=0>All</option>
 														<%for(TopCategory topCategory:topList){ %>
-															<option value="<%=topCategory.getTopcategory_id()%>"><%=topCategory.getName() %></option>
+																<option disabled="disabled"><%=topCategory.getName() %></option>
+															<%for(SubCategory subcategory : topCategory.getSubcategoryList()) {%>
+																<option value="<%=subcategory.getSubcategory_id()%>"><%=subcategory.getName()%></option>
+															<%} %>
 														<%} %>
 													</select>
 												</div>
-												<div class="form-group col-md-3">
+												<!-- <div class="form-group col-md-3">
 													<input type="text" class="form-control my-2 my-lg-1" id="inputLocation4" name="product_addr" placeholder="Location">
-												</div>
+												</div> -->
 												<div class="form-group col-md-2 align-self-center">
 													<button type="button" class="btn btn-primary" onClick="searchProduct()">Search Now</button>
 												</div>

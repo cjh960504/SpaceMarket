@@ -3,6 +3,7 @@ package com.korea.spacemarket.admin.controller.product;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class AdminProductController implements ServletContextAware {
 	private SubCategoryService subCategoryService;
 	@Autowired
 	private ProductService productService;
-	@Autowired
+	@Autowired  
 	private FileManager fileManager;
 	
 	private ServletContext servletContext;
@@ -57,7 +58,7 @@ public class AdminProductController implements ServletContextAware {
 												/* 상품관련 */
 	/*===============================================*/
 	@GetMapping("/product/list")
-	public ModelAndView getProductList() {
+	public ModelAndView getProductList(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/product/product_list");
 		List productList = productService.selectAll();
 		mav.addObject("productList", productList);
@@ -65,7 +66,7 @@ public class AdminProductController implements ServletContextAware {
 	}
 	
 	@GetMapping("/product/registForm")
-	public ModelAndView getProductRegistForm() {
+	public ModelAndView getProductRegistForm(HttpServletRequest request) {
 		List<TopCategory> topList = topCategoryService.selectAll();
 		ModelAndView mav = new ModelAndView("admin/product/regist_form");
 		mav.addObject("topList", topList);
@@ -74,16 +75,16 @@ public class AdminProductController implements ServletContextAware {
 	
 	@RequestMapping(value="/product/getSubCategory", method=RequestMethod.POST)
 	@ResponseBody
-	public List getSubCategory(int topcategory_id) {
+	public List getSubCategory(int topcategory_id, HttpServletRequest request) {
 		List subList = subCategoryService.selectByTop(topcategory_id);
 		return subList;
 	}
 	
 	@RequestMapping(value="/product/regist", method=RequestMethod.POST)
 	@ResponseBody
-	public MessageData registProduct(Product product) {
-		logger.debug("파일 사이즈"+product.getProductImg().length);
-		productService.regist(fileManager, product);//경로를 알고 파일명을 변경할 수 있는 filemanager와 함께
+	public MessageData registProduct(Product product, HttpServletRequest request) {
+//		logger.debug("파일 사이즈"+product.getProductImg().length);
+//		productService.regist(fileManager, product);//경로를 알고 파일명을 변경할 수 있는 filemanager와 함께
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
 		messageData.setMsg("상품 등록을 성공했습니다.");
@@ -91,7 +92,7 @@ public class AdminProductController implements ServletContextAware {
 	}
 	
 	@GetMapping("/product/detail")
-	public ModelAndView detailProduct(int product_id) {
+	public ModelAndView detailProduct(int product_id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/product/product_detail");
 		Product product = productService.selectById(product_id);
 		List<TopCategory> topList = topCategoryService.selectAll();
@@ -102,7 +103,7 @@ public class AdminProductController implements ServletContextAware {
 	
 	@PostMapping("/product/delete")
 	@ResponseBody
-	public MessageData delete(int product_id) {
+	public MessageData delete(int product_id, HttpServletRequest request) {
 		logger.debug(""+product_id);
 		productService.deleteProduct(fileManager, product_id);
 		MessageData messageData = new MessageData();
@@ -115,7 +116,7 @@ public class AdminProductController implements ServletContextAware {
 												/* 카테고리관련 */
 	/*===============================================*/
 	@GetMapping("/category/list")
-	public ModelAndView getCategoryList() {
+	public ModelAndView getCategoryList(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/product/category_list");
 		List topList = topCategoryService.selectAll();
 		mav.addObject("topList", topList);
@@ -126,7 +127,7 @@ public class AdminProductController implements ServletContextAware {
 	
 	@PostMapping("/category/registTop")
 	@ResponseBody
-	public MessageData registTopCategory(TopCategory topcategory) {
+	public MessageData registTopCategory(TopCategory topcategory, HttpServletRequest request) {
 		topCategoryService.insert(topcategory);
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
@@ -136,7 +137,7 @@ public class AdminProductController implements ServletContextAware {
 	
 	@PostMapping("/category/updateTop")
 	@ResponseBody
-	public MessageData updateTopCategory(TopCategory topcategory) {
+	public MessageData updateTopCategory(TopCategory topcategory, HttpServletRequest request) {
 		topCategoryService.update(topcategory);
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
@@ -146,7 +147,7 @@ public class AdminProductController implements ServletContextAware {
 	
 	@PostMapping("/category/deleteTop")
 	@ResponseBody
-	public MessageData deleteTopCategory(int topcategory_id) {
+	public MessageData deleteTopCategory(int topcategory_id, HttpServletRequest request) {
 		topCategoryService.delete(topcategory_id);
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
@@ -155,7 +156,7 @@ public class AdminProductController implements ServletContextAware {
 	}
 	@PostMapping("/category/registSub")
 	@ResponseBody
-	public MessageData registSubCategory(SubCategory subCategory) {
+	public MessageData registSubCategory(SubCategory subCategory, HttpServletRequest request) {
 		System.out.println(subCategory.getTopCategory().getTopcategory_id());
 		subCategoryService.insert(subCategory);
 		MessageData messageData = new MessageData();
@@ -166,7 +167,7 @@ public class AdminProductController implements ServletContextAware {
 	
 	@PostMapping("/category/deleteSub")
 	@ResponseBody
-	public MessageData deleteSubCategory(int subcategory_id) {
+	public MessageData deleteSubCategory(int subcategory_id, HttpServletRequest request) {
 		subCategoryService.delete(subcategory_id);
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);

@@ -44,9 +44,20 @@ public class MybatisProductDAO implements ProductDAO{
 			 throw new ProductDeleteFailException("상품 삭제를 실패하였습니다.");
 		 }
 	}
+	
 	@Override
 	public List<Product> selectForSearch(ForSearch forSearch) {
 		return sqlSessionTemplate.selectList("Product.selectForSearch", forSearch);
+	}
+	
+	@Override
+	public List<Product> selectForAll(ForSearch forSearch) {
+		return sqlSessionTemplate.selectList("Product.selectForAll", forSearch);
+	}
+	
+	@Override
+	public List<Product> search(String product_name) {
+		return sqlSessionTemplate.selectList("Product.selectForName", product_name);
 	}
 	
 	@Override
@@ -64,5 +75,6 @@ public class MybatisProductDAO implements ProductDAO{
 			throw new ProductStateUpdateFailException("상품 상태 변경 실패하였습니다.");
 		}
 	}
+	
 	
 }

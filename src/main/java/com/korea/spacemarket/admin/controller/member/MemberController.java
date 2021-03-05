@@ -3,6 +3,7 @@ package com.korea.spacemarket.admin.controller.member;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class MemberController implements ServletContextAware{
 	
 	//회원목록
 	@GetMapping("/member/list")
-	public ModelAndView getMemberList() {
+	public ModelAndView getMemberList(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/member/member_list");
 		List memberList = memberService.selectAll();
 		mav.addObject("memberList", memberList);
@@ -51,14 +52,14 @@ public class MemberController implements ServletContextAware{
 	
 	//회원등록폼요청
 	@GetMapping("/member/registform")
-	public String registForm() {
+	public String registForm(HttpServletRequest request) {
 		return "admin/member/regist_form";
 	}
 	
 	//회원등록
 	@PostMapping(value="/member/regist", produces="text/html;charset=utf8")
 	@ResponseBody
-	public String registMember(Member member) {
+	public String registMember(Member member, HttpServletRequest request) {
 		memberService.regist(fileManager, member);
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
@@ -70,7 +71,7 @@ public class MemberController implements ServletContextAware{
 	
 	//상세보기
 	@GetMapping("/member/detail")
-	public ModelAndView memberDetail(int member_id) {
+	public ModelAndView memberDetail(int member_id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/member/member_detail");
 		Member member = memberService.select(member_id);
 		mav.addObject("member", member);
@@ -80,8 +81,9 @@ public class MemberController implements ServletContextAware{
 	//회원수정
 	@PostMapping("/member/edit")
 	@ResponseBody
-	public MessageData update(Member member) {
+	public MessageData update(Member member, HttpServletRequest request) {
 		//memberService.update(fileManager, member);
+		//MemberMapper에서 새로운 sql 쿼리 필요
 		memberService.update(member);
 		MessageData messageData = new MessageData();
 		messageData.setResultCode(1);
@@ -91,7 +93,7 @@ public class MemberController implements ServletContextAware{
 	
 	//회원삭제
 	@PostMapping("/member/delete")
-	public String delete(int member_id) {
+	public String delete(int member_id, HttpServletRequest request) {
 		memberService.delete(member_id);
 		return "redirect:/admin/member/list";
 	}

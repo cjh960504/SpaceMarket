@@ -43,8 +43,17 @@ namespace="Product">
 	</delete>
 	
 	<select id="selectForSearch" parameterType="ForSearch" resultMap="productJoinImage">
-		select * from product where product_name LIKE '%'||#{product_name}||'%' and product_addr LIKE '%'||#{product_addr}||'%'
+		select * from product where product_addr LIKE '%'||#{product_addr}||'%' and subcategory_id=#{subcategory_id} and product_name LIKE '%'||#{product_name}||'%'
 	</select>
+	
+	<select id="selectForAll" parameterType="ForSearch" resultMap="productJoinImage">
+		select * from product where product_addr LIKE '%'||#{product_addr}||'%' and product_name LIKE '%'||#{product_name}||'%'
+	</select>
+	
+	<select id="selectForSubCategory" parameterType="ForSearch" resultMap="productJoinImage">
+		select * from product where subcategory_id=#{subcategory_id}
+	</select>
+	
 	
 	<update id="updateState" parameterType="int">
 		update product set product_state_id=2 where product_id=#{product_id}

@@ -12,7 +12,7 @@ public interface MemberService {
 	public void update(Member member);
 	public void delete(int member_id);
 	public Member login(Member member);
-	public void findid(Member member);
+	public Member findid(Member member);
 	public void findpassword(Member member);
 	public Member selectWithProduct(int member_id);
 	public Member selectWithFavorite(int member_id);

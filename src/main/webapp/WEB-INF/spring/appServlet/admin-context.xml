@@ -15,14 +15,23 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 
+	<beans:bean id="adminSessionCheckAspect" class="com.korea.spacemarket.admin.aop.AdminSessionCheckAspect"/>
+	
+	<aop:config>
+		<aop:aspect id="sessionCheckAspect" ref="adminSessionCheckAspect">
+			<aop:pointcut expression="execution(public * com.korea.spacemarket.admin.controller..*(..))" id="sessionPointcut"/>
+			<aop:around method="sessionCheck" pointcut-ref="sessionPointcut"/>
+		</aop:aspect>
+	</aop:config>
+	
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+	
 	
 	
 	<context:component-scan base-package="com.korea.spacemarket.admin.controller" />
 	
-	
+	<beans:bean id="globalExceptionHandler" class="com.korea.spacemarket.admin.aop.GlobalExceptionHandler"/>
 	
 </beans:beans>

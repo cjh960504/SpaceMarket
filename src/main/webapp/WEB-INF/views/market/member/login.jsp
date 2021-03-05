@@ -40,7 +40,7 @@
                             </div> -->
                             <button type="button" onClick="login()" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Log in</button>
                             <a class="mt-3 d-block  text-primary" href="/market/member/findIdForm">Forget Id?</a>
-                            <a class="mt-3 d-block  text-primary" href="#">Forget Password?</a>
+                            <a class="mt-3 d-block  text-primary" href="/market/member/findPWForm">Forget Password?</a>
                             <a class="mt-3 d-inline-block text-primary" href="/market/member/registForm">Register Now</a>
                         </fieldset>
   			         </form>

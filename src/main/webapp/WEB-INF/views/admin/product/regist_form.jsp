@@ -140,6 +140,7 @@
 			type:"post",
 			success:function(responseData){
 				//성공실패 여부를 판단할 수 있는 데이터
+				alert(responseData.msg);
 				if(responseData.resultCode==1){
 					location.href="/admin/product/list";
 				}else{

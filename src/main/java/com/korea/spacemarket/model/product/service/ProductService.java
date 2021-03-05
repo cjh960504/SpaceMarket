@@ -16,4 +16,5 @@ public interface ProductService {
 	public void insertFavorite(Favorite favorite);
 	public void deleteProduct(int product_id);
 	public void updateState(int product);
+	public List<Product> search(String product_name);
 }

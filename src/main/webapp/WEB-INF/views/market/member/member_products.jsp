@@ -13,6 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Classimax</title>
 <%@ include file="../inc/header.jsp" %>
+<style>
+  	.before{
+  	    color: #59d659;
+  }
+  .after{
+  	    color: #d91c1c;
+  }
+  	   
+</style>
 <script>
 	function saleStop(id) {
 		$.ajax({
@@ -22,7 +31,8 @@
   				product_id:id
   			},
   			success:function(responseData){
-  				location.reload(); //responseData가 출력되지 않아 임시방편
+  				alert(responseData.msg);
+  				location.reload();
   			}
   		});
 	}
@@ -122,7 +132,7 @@
 									<td class="product-details">
 										<h3 class="title"><%=product.getProduct_name() %></h3>
 										<span><strong>Posted on: </strong><time><%=product.getRegdate().substring(0, 10) %></time> </span>
-										<span class="status active"><strong>Status</strong><%=product.getProductState().getState()%></span>
+										<span ><strong>Status</strong> <i  <%if(product.getProductState().getProduct_state_id()==1){%>class="before"<% }else{ %>class="after"<%} %>><%=product.getProductState().getState()%></i></span>
 										<span class="location"><strong>Location</strong><%=product.getProduct_addr() %></span>
 									</td>
 									<td class="product-category"><span class="categories"><%=product.getSubCategory().getName() %></span></td>
